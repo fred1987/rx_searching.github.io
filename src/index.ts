@@ -1,5 +1,5 @@
-import { from, fromEvent, Observable } from 'rxjs'
-import { debounceTime, distinctUntilChanged, map, pluck, switchMap } from 'rxjs/operators'
+import { from, fromEvent, Observable, of } from 'rxjs'
+import { catchError, debounceTime, distinctUntilChanged, map, pluck, switchMap } from 'rxjs/operators'
 
 const inputEl: HTMLInputElement = document.querySelector('input') as HTMLInputElement
 const resEl: HTMLDivElement = document.querySelector('#result') as HTMLDivElement
@@ -13,10 +13,10 @@ function request$(str: string): Promise<res> {
 
 const stream$: Observable<string> = fromEvent(inputEl, 'input').pipe(
     pluck<Event, string>('target', 'value'),
-    debounceTime(1000),
+    debounceTime(700),
     distinctUntilChanged(),
-    switchMap<string, res>((x: string) => from(request$(x))),
-    map((x: res) => x.items.map(x => `<p>${x.html_url}</p>`).join(''))
+    switchMap<string, res>((x: string) => (x.length > 0) ? from(request$(x)) : of('')),
+    map((x: res | string) => (typeof x === 'string') ? '' : x.items.map(x => `<p>${x.html_url}</p>`).join(''))
 )
 
 stream$.subscribe(
