@@ -1,5 +1,5 @@
 import { from, fromEvent, Observable, of } from 'rxjs'
-import { catchError, debounceTime, distinctUntilChanged, map, pluck, switchMap } from 'rxjs/operators'
+import { debounceTime, distinctUntilChanged, map, pluck, switchMap } from 'rxjs/operators'
 
 const inputEl: HTMLInputElement = document.querySelector('input') as HTMLInputElement
 const resEl: HTMLDivElement = document.querySelector('#result') as HTMLDivElement
