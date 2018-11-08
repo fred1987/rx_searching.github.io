@@ -1,1 +1,1 @@
-# RXJS search
+# GitHub API search by RXJS
