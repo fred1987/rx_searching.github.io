@@ -15,8 +15,8 @@ const stream$: Observable<string> = fromEvent(inputEl, 'input').pipe(
     pluck<Event, string>('target', 'value'),
     debounceTime(1000),
     distinctUntilChanged(),
-    switchMap<string, res>((x: string) => (x !== '') ? from(request$(x)) : ''),
-    map((x: res | string) => (typeof x === 'string') ? '' : x.items.map(x => `<p>${x.html_url}</p>`).join(''))
+    switchMap<string, res>((x: string) => from(request$(x))),
+    map((x: res) => x.items.map(x => `<p>${x.html_url}</p>`).join(''))
 )
 
 stream$.subscribe(
